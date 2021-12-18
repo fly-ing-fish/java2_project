@@ -27,7 +27,6 @@ public class Main {
                     colums[i] ="0";
                 }
             }
-
             DataRow tem = new DataRow();
             tem.iso_code = colums[0];
             tem.continent = colums[1];
@@ -62,7 +61,7 @@ public class Main {
             tem.new_tests_smoothed_per_thousand = Double.parseDouble(colums[30]);
             tem.positive_rate = Double.parseDouble(colums[31]);
             tem.tests_per_case = Double.parseDouble(colums[32]);
-            String tests_units = colums[33];
+            tem.tests_units = colums[33];
             tem.total_vaccinations = Double.parseDouble(colums[34]);
             tem.people_vaccinated = Double.parseDouble(colums[35]);
             tem.people_fully_vaccinated = Double.parseDouble(colums[36]);
@@ -99,4 +98,6 @@ public class Main {
         }
         System.out.println(dataRows.size());
     }
+    //public static bar bar(){
+    //}
 }
