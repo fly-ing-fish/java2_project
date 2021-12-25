@@ -97,7 +97,8 @@
     show(jsonObj)
     }
     };
-    response.open("GET","http://localhost:8082/api/getInformation",true);
+    response.open("GET","http://localhost:8082/api/getLineInformation",true);
+    // response.open("GET","http://localhost:8082/api/getBarInformation",true);
     response.send()
     function show(jsonObj){
         option.title.text=''
