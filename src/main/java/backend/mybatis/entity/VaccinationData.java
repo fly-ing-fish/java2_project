@@ -12,6 +12,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.Serializable;
 
@@ -23,36 +24,30 @@ public class VaccinationData implements Serializable {
     String WHO_REGION;
     String DATA_SOURCE;
     LocalDate DATE_UPDATED;
-    int TOTAL_VACCINATIONS;
+    double TOTAL_VACCINATIONS;
     double PERSONS_VACCINATED_1PLUS_DOSE;
-    int TOTAL_VACCINATIONS_PER100;
+    double TOTAL_VACCINATIONS_PER100;
     double PERSONS_VACCINATED_1PLUS_DOSE_PER100;
-    int PERSONS_FULLY_VACCINATED;
+    double PERSONS_FULLY_VACCINATED;
     double PERSONS_FULLY_VACCINATED_PER100;
     String VACCINES_USED;
     LocalDate FIRST_VACCINE_DATE;
     int NUMBER_VACCINES_TYPES_USED;
 
-    public static ArrayList<VaccinationData> download() throws IOException {
+    @CrossOrigin
+    public static ArrayList<VaccinationData> download() throws Exception {
         ArrayList<VaccinationData> res = new ArrayList<>();
-        String path = "src/main/java/backend/tables/VaccinationData_tem.csv";
-        String path1 = "src/main/java/backend/tables/VaccinationData.csv";
+        String downLoadPath = UseMsedge.downloadLocation + "vaccination-data.csv";
+        String path = "src/main/java/backend/tables/VaccinationData.csv";
         URL url = new URL("https://covid19.who.int/who-data/vaccination-data.csv");
-
-        File f = new File(path);
-        BufferedInputStream bis = new BufferedInputStream(url.openStream());
-        OutputStream outputStream = new FileOutputStream(f);
-        byte[] bytes = new byte[1024*1024];
-        int byteCount = 0;
-        while ((byteCount = bis.read(bytes)) != -1) {
-            outputStream.write(bytes, 0, byteCount);
-        }
-        bis.close();
-        outputStream.close();
+        UseMsedge.openBrowser(url.toString());
+        UseMsedge.closeBrowse();
+        UseMsedge.moveFile(downLoadPath, path);
 
         String charset = "utf-8";
-        String[] trace =null;
-        try (CSVReader csvReader = new CSVReaderBuilder(new BufferedReader(new InputStreamReader(new FileInputStream(new File(path)), charset))).build()) {
+        String[] trace = null;
+        FileInputStream fin = new FileInputStream(path);
+        try (CSVReader csvReader = new CSVReaderBuilder(new BufferedReader(new InputStreamReader(fin, charset))).build()) {
             Iterator<String[]> iterator = csvReader.iterator();
             iterator.next();
             while (iterator.hasNext()) {
@@ -68,18 +63,24 @@ public class VaccinationData implements Serializable {
                 tem.WHO_REGION = colums[2];
                 tem.DATA_SOURCE = colums[3];
                 tem.DATE_UPDATED = LocalDate.parse(colums[4]);
-                tem.TOTAL_VACCINATIONS = Integer.parseInt(colums[5]);
+                tem.TOTAL_VACCINATIONS = Double.parseDouble(colums[5]);
                 tem.PERSONS_VACCINATED_1PLUS_DOSE = Double.parseDouble(colums[6]);
-                tem.TOTAL_VACCINATIONS_PER100 = Integer.parseInt(colums[7]);
+                tem.TOTAL_VACCINATIONS_PER100 = Double.parseDouble(colums[7]);
                 tem.PERSONS_VACCINATED_1PLUS_DOSE_PER100 = Double.parseDouble(colums[8]);
                 tem.PERSONS_FULLY_VACCINATED = Integer.parseInt(colums[9]);
                 tem.PERSONS_FULLY_VACCINATED_PER100 = Double.parseDouble(colums[10]);
                 tem.VACCINES_USED = colums[11];
-                tem.FIRST_VACCINE_DATE = LocalDate.parse(colums[12]);
+                if (colums[12].equals("0")) {
+                    tem.FIRST_VACCINE_DATE = null;
+                } else {
+                    tem.FIRST_VACCINE_DATE = LocalDate.parse(colums[12]);
+                }
                 tem.NUMBER_VACCINES_TYPES_USED = Integer.parseInt(colums[13]);
                 res.add(tem);
 
             }
+            fin.close();
+            UseMsedge.deleteFile(downLoadPath);
             return res;
         } catch (Exception e) {
             e.printStackTrace();

@@ -9,6 +9,10 @@
 </head>
 <body>
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div>
+    <button onclick="update1()">更新github数据</button>"
+    <button onclick="update2()">更新who数据</button>"
+</div>
 <div id="main" style="width: 800px;height:500px;"></div>
 <script type="text/javascript">
     var myChart = echarts.init(document.getElementById('main'), null, {renderer: 'svg'});
@@ -106,6 +110,15 @@
         option.series=jsonObj['data']
         myChart.setOption(option);
         console.log(option)
+    }
+
+    function update1(){
+        response.open("PUT","http://localhost:8082/api/updateGiuHub",true);
+        response.send()
+    }
+    function update2(){
+        response.open("PUT","http://localhost:8082/api/updateWho",true);
+        response.send()
     }
 </script>
 </body>

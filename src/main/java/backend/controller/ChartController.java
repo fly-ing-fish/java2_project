@@ -16,8 +16,18 @@ public class ChartController {
     private ChartService chartService;
     @CrossOrigin
     @RequestMapping(value = "getLineInformation", method = RequestMethod.GET)
-    public ResponseEntity<?> getLineInformation() throws IOException {
-        return chartService.getLineInformation4();
+    public ResponseEntity<?> getLineInformation() throws Exception {
+//        return chartService.getLineInformation3();
+        return  null;
+    }
+    @RequestMapping(value = "updateGiuHub", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateGiuHub() throws Exception {
+        return chartService.updateGiuHub();
+    }
+
+    @RequestMapping(value = "updateWho", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateWho() throws Exception {
+        return chartService.updateWho();
     }
 //    @CrossOrigin
 //    @RequestMapping(value = "getBarInformation", method = RequestMethod.GET)
