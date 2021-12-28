@@ -11,6 +11,7 @@
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <div align="center">
     <button class="button" onclick="window.location.href='chart.html'" type="button" id="add">跳转</button>
+    <button onclick="update1()">更新github数据</button>
     <a href="G:\java2_project\src\chart.html"></a>
     </button>
 
@@ -33,14 +34,16 @@
 
 <script type="text/javascript">
 
-    // function update1(){
-    //     response.open("PUT","http://localhost:8082/api/updateGiuHub",true);
-    //     response.send()
-    // }
-    // function update2(){
-    //     response.open("PUT","http://localhost:8082/api/updateWho",true);
-    //     response.send()
-    // }
+    response = new XMLHttpRequest();
+
+    function update1(){
+        response.open("PUT","http://localhost:8083/api/updateGiuHub",true);
+        response.send()
+    }
+    function update2(){
+        response.open("PUT","http://localhost:8083/api/updateWho",true);
+        response.send()
+    }
 </script>
 </body>
 </html>

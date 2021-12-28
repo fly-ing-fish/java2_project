@@ -20,7 +20,7 @@ public class ChartService {
     static ArrayList<DailyCasesAndDeaths>storedData=new ArrayList<>();
     static {
         try {
-            dataRows = DailyCasesAndDeaths.download();
+            dataRows = DailyCasesAndDeaths.update();
             storedData.addAll(dataRows);
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,7 +28,7 @@ public class ChartService {
     }
 
     public ResponseEntity<?> getLineInformation1() throws IOException {
-        ArrayList<DailyCasesAndDeaths> dataRows = DailyCasesAndDeaths.download();
+        ArrayList<DailyCasesAndDeaths> dataRows = DailyCasesAndDeaths.update();
 
         HashMap<String, Component> hashMap = new HashMap<>();
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();
@@ -60,7 +60,7 @@ public class ChartService {
     }
 
     public ResponseEntity<?> getLineInformation2() throws IOException {
-        ArrayList<LatestCasesAndDeaths> dataRows = LatestCasesAndDeaths.download();
+        ArrayList<LatestCasesAndDeaths> dataRows = LatestCasesAndDeaths.update();
         HashMap<String, Component> hashMap = new HashMap<>();
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();
         List<String> strings = new LinkedList<>();
@@ -91,7 +91,9 @@ public class ChartService {
     }
 
     public ResponseEntity<?> getLineInformation3() throws Exception {
-        ArrayList<VaccinationData> dataRows = VaccinationData.download();
+        readDataFromWho.download();
+        readDataFromGithub.download();
+        ArrayList<VaccinationData> dataRows = VaccinationData.update();
 
         HashMap<String, Component> hashMap = new HashMap<>();
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();
@@ -122,7 +124,7 @@ public class ChartService {
         return new ResponseEntity<>(stringObjectHashMap, HttpStatus.OK);
     }
     public ResponseEntity<?> redownload() throws Exception{
-        dataRows = DailyCasesAndDeaths.download();
+        dataRows = DailyCasesAndDeaths.update();
         return new ResponseEntity<>(HttpStatus.OK);
     }
     public ResponseEntity<?> getInformations(int page) throws Exception{
@@ -222,7 +224,7 @@ public class ChartService {
     }
 
     public ResponseEntity<?> getLineInformation4() throws Exception {
-        ArrayList<VaccinationMetadata> dataRows = VaccinationMetadata.download();
+//        ArrayList<VaccinationMetadata> dataRows = VaccinationMetadata.download();
 //
 //        HashMap<String, Component> hashMap = new HashMap<>();
 //        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
@@ -289,6 +291,7 @@ public class ChartService {
         System.out.println();
         System.out.println("read data from gitHub");
         readDataFromGithub.download();
+        readDataFromWho.update();
         System.out.println("success");
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
@@ -297,6 +300,7 @@ public class ChartService {
         System.out.println();
         System.out.println("read data from Who");
         readDataFromWho.download();
+        readDataFromWho.update();
         System.out.println("success");
         return new ResponseEntity<>(null, HttpStatus.OK);
     }

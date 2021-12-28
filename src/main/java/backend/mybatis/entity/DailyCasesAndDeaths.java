@@ -28,21 +28,24 @@ public class DailyCasesAndDeaths implements Serializable {
     int New_deaths;
     int Cumulative_deaths;
 
-    public static ArrayList<DailyCasesAndDeaths> download() throws IOException {
-        ArrayList<DailyCasesAndDeaths> res = new ArrayList<>();
+    public static void download() throws IOException {
+
         String path = "src/main/java/backend/tables/DailyCasesAndDeaths.csv";
         URL url = new URL("https://covid19.who.int/WHO-COVID-19-global-data.csv");
         InputStream inputStream = url.openStream();
         File f = new File(path);
         OutputStream outputStream = new FileOutputStream(f);
         int byteCount = 0;
-        byte[] bytes = new byte[1024*1024];
+        byte[] bytes = new byte[1024 * 1024];
         while ((byteCount = inputStream.read(bytes)) != -1) {
             outputStream.write(bytes, 0, byteCount);
         }
         inputStream.close();
         outputStream.close();
-
+    }
+    public static ArrayList<DailyCasesAndDeaths> update() throws IOException {
+        ArrayList<DailyCasesAndDeaths> res = new ArrayList<>();
+        String path = "src/main/java/backend/tables/DailyCasesAndDeaths.csv";
         String charset = "utf-8";
         String[] trace =null;
         try (CSVReader csvReader = new CSVReaderBuilder(new BufferedReader(new InputStreamReader(new FileInputStream(new File(path)), charset))).build()) {
@@ -74,4 +77,5 @@ public class DailyCasesAndDeaths implements Serializable {
         }
         return res;
     }
+
 }

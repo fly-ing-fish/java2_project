@@ -35,15 +35,18 @@ public class VaccinationData implements Serializable {
     int NUMBER_VACCINES_TYPES_USED;
 
     @CrossOrigin
-    public static ArrayList<VaccinationData> download() throws Exception {
-        ArrayList<VaccinationData> res = new ArrayList<>();
+    public static void download() throws Exception {
         String downLoadPath = UseMsedge.downloadLocation + "vaccination-data.csv";
         String path = "src/main/java/backend/tables/VaccinationData.csv";
         URL url = new URL("https://covid19.who.int/who-data/vaccination-data.csv");
         UseMsedge.openBrowser(url.toString());
         UseMsedge.closeBrowse();
         UseMsedge.moveFile(downLoadPath, path);
+    }
 
+    public static ArrayList<VaccinationData> update() throws Exception {
+        ArrayList<VaccinationData> res = new ArrayList<>();
+        String path = "src/main/java/backend/tables/VaccinationData.csv";
         String charset = "utf-8";
         String[] trace = null;
         FileInputStream fin = new FileInputStream(path);
@@ -80,7 +83,6 @@ public class VaccinationData implements Serializable {
 
             }
             fin.close();
-            UseMsedge.deleteFile(downLoadPath);
             return res;
         } catch (Exception e) {
             e.printStackTrace();

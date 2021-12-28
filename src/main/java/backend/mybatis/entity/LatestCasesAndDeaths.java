@@ -31,21 +31,23 @@ public class LatestCasesAndDeaths implements Serializable {
     double DeathsNewlyIn7daysPer100000;
     int DeathsReportedIn24hours;
 
-    public static ArrayList<LatestCasesAndDeaths> download() throws IOException {
-        ArrayList<LatestCasesAndDeaths> res = new ArrayList<>();
+    public static void download() throws IOException {
         String path = "src/main/java/backend/tables/LatestCasesAndDeaths.csv";
         URL url = new URL("https://covid19.who.int/WHO-COVID-19-global-table-data.csv");
         InputStream inputStream = url.openStream();
         File f = new File(path);
         OutputStream outputStream = new FileOutputStream(f);
         int byteCount = 0;
-        byte[] bytes = new byte[1024*1024*1024];
+        byte[] bytes = new byte[1024 * 1024 * 1024];
         while ((byteCount = inputStream.read(bytes)) != -1) {
             outputStream.write(bytes, 0, byteCount);
         }
         inputStream.close();
         outputStream.close();
-
+    }
+    public static ArrayList<LatestCasesAndDeaths> update() throws IOException {
+        String path = "src/main/java/backend/tables/LatestCasesAndDeaths.csv";
+        ArrayList<LatestCasesAndDeaths> res = new ArrayList<>();
         String charset = "utf-8";
         try (CSVReader csvReader = new CSVReaderBuilder(new BufferedReader(new InputStreamReader(new FileInputStream(new File(path)), charset))).build()) {
             Iterator<String[]> iterator = csvReader.iterator();

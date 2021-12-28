@@ -10,9 +10,16 @@ public class readDataFromWho {
     public static ArrayList<VaccinationMetadata> vaccinationMetadata = new ArrayList<>();
 
     public static void download() throws Exception {
-        dailyCasesAndDeaths = DailyCasesAndDeaths.download();
-        latestCasesAndDeaths = LatestCasesAndDeaths.download();
-        vaccinationData = VaccinationData.download();
-        vaccinationMetadata = VaccinationMetadata.download();
+        DailyCasesAndDeaths.download();
+        LatestCasesAndDeaths.download();
+        VaccinationData.download();
+        VaccinationMetadata.download();
+    }
+
+    public static void update() throws Exception {
+        dailyCasesAndDeaths = DailyCasesAndDeaths.update();
+        latestCasesAndDeaths = LatestCasesAndDeaths.update();
+        vaccinationData = VaccinationData.update();
+        vaccinationMetadata = VaccinationMetadata.update();
     }
 }

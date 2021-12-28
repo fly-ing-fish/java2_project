@@ -30,16 +30,18 @@ public class VaccinationMetadata implements Serializable {
     String COMMENT;
     String DATA_SOURCE;
 
-    public static ArrayList<VaccinationMetadata> download() throws Exception {
-
-        ArrayList<VaccinationMetadata> res = new ArrayList<>();
+    public static void download() throws Exception {
         String downLoadPath = UseMsedge.downloadLocation + "vaccination-metadata.csv";
         String path = "src/main/java/backend/tables/VaccinationMetadata.csv";
         URL url = new URL("https://covid19.who.int/who-data/vaccination-metadata.csv");
         UseMsedge.openBrowser(url.toString());
         UseMsedge.closeBrowse();
-        UseMsedge.moveFile(downLoadPath, path);;
+        UseMsedge.moveFile(downLoadPath, path);
+    }
 
+    public static ArrayList<VaccinationMetadata> update() throws Exception {
+        ArrayList<VaccinationMetadata> res = new ArrayList<>();
+        String path = "src/main/java/backend/tables/VaccinationMetadata.csv";
         String charset = "utf-8";
         try (CSVReader csvReader = new CSVReaderBuilder(new BufferedReader(new InputStreamReader(new FileInputStream(new File(path)), charset))).build()) {
             Iterator<String[]> iterator = csvReader.iterator();
@@ -82,7 +84,6 @@ public class VaccinationMetadata implements Serializable {
                 res.add(tem);
 
             }
-
             return res;
         } catch (Exception e) {
             e.printStackTrace();
