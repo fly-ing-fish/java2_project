@@ -31,8 +31,8 @@ public class VaccinationMetadata implements Serializable {
 
     public static ArrayList<VaccinationMetadata> download() throws IOException {
         ArrayList<VaccinationMetadata> res = new ArrayList<>();
-        String path = "src/main/java/backend/tables/VaccinationMetadata.csv";
-        URL url = new URL("https://covid19.who.int/who-data/vaccination-metadata.csv");
+        String path = "src/main/java/backend/tables/vaccination-metadata.csv.csv";
+        /*URL url = new URL("https://covid19.who.int/who-data/vaccination-metadata.csv");
         InputStream inputStream = url.openStream();
         File f = new File(path);
         OutputStream outputStream = new FileOutputStream(f);
@@ -42,8 +42,7 @@ public class VaccinationMetadata implements Serializable {
             outputStream.write(bytes, 0, byteCount);
         }
         inputStream.close();
-        outputStream.close();
-
+        outputStream.close();*/
         String charset = "utf-8";
         try (CSVReader csvReader = new CSVReaderBuilder(new BufferedReader(new InputStreamReader(new FileInputStream(new File(path)), charset))).build()) {
             Iterator<String[]> iterator = csvReader.iterator();

@@ -99,10 +99,10 @@ function sort(type){
         sort.open("GET", "http://localhost:8082/api/sortLatestInformation?sort=" + attribute, true);
         sort.send();
     }else if (type===3) {
-        sort.open("GET", "http://localhost:8082/api/sortInformation?sort=" + attribute, true);
+        sort.open("GET", "http://localhost:8082/api/sortVaccinationInformation?sort=" + attribute, true);
         sort.send();
     }else if (type===4) {
-        sort.open("GET", "http://localhost:8082/api/sortLatestInformation?sort=" + attribute, true);
+        sort.open("GET", "http://localhost:8082/api/sortVaccinationMetaInformation?sort=" + attribute, true);
         sort.send();
     }
 
@@ -122,6 +122,12 @@ function search(type){
         searchRequest.send();
     }else if(type===2){
         searchRequest.open("GET", "http://localhost:8082/api/searchLatestInformation?sort=" + attribute + "&&search=" + search, true);
+        searchRequest.send();
+    }else if(type===3) {
+        searchRequest.open("GET", "http://localhost:8082/api/searchVaccinationInformation?sort=" + attribute + "&&search=" + search, true);
+        searchRequest.send();
+    }else if(type===4){
+        searchRequest.open("GET", "http://localhost:8082/api/searchVaccinationMetaInformation?sort=" + attribute + "&&search=" + search, true);
         searchRequest.send();
     }
 }
