@@ -58,7 +58,6 @@ function initial(type) {
             let jsonObj = JSON.parse(response.responseText)
             if(jsonObj!=null) {
                 document.getElementById("length").innerHTML = jsonObj['length']
-
                 for (let num = 0; num < jsonObj['table'].length; num++) {
                     console.log(jsonObj['table'].length)
                     addRow(jsonObj['table'][num], num + 1);
@@ -104,6 +103,9 @@ function sort(type){
     }else if (type===4) {
         sort.open("GET", "http://localhost:8082/api/sortVaccinationMetaInformation?sort=" + attribute, true);
         sort.send();
+    }else if(type===0){
+        sort.open("GET", "http://localhost:8082/api/sortAllInformation?sort=" + attribute, true);
+        sort.send();
     }
 
 }
@@ -128,6 +130,9 @@ function search(type){
         searchRequest.send();
     }else if(type===4){
         searchRequest.open("GET", "http://localhost:8082/api/searchVaccinationMetaInformation?sort=" + attribute + "&&search=" + search, true);
+        searchRequest.send();
+    }else if(type===0){
+        searchRequest.open("GET", "http://localhost:8082/api/searchAllInformation?sort=" + attribute + "&&search=" + search, true);
         searchRequest.send();
     }
 }

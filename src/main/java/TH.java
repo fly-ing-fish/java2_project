@@ -1,13 +1,14 @@
 import backend.mybatis.entity.DailyCasesAndDeaths;
+import backend.mybatis.entity.DataRow;
 import backend.mybatis.entity.LatestCasesAndDeaths;
 import backend.mybatis.entity.VaccinationData;
-import backend.mybatis.entity.VaccinationMetadata;
+//import backend.mybatis.entity.VaccinationMetadata;
 
 import java.lang.reflect.Field;
 
 public class TH {
     public static void main(String[] args) {
-        Class<?>temp= LatestCasesAndDeaths.class;
+        Class<?>temp= DataRow.class;
         for(Field field:temp.getDeclaredFields())
             System.out.println("<option>"+field.getName()+"</option>");
         for(Field field:temp.getDeclaredFields())

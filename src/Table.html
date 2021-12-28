@@ -6,57 +6,161 @@
     <title>Title</title>
     <script type="text/javascript" src="table.js"></script>
 </head>
-<body onload="initial()" >
+<body onload="initial(0)" >
+<div align="center">
+    <button class="button" onclick="window.location.href='chart.html'" type="button" id="chart">chart</button>
+    <button class="button" onclick="window.location.href='bar.html'" type="button" id="bar">bar</button>
+    <button class="button" onclick="window.location.href='pie.html'" type="button" id="pie">pie</button>
+    <button class="button" onclick="window.location.href='Table.html'" type="button" id="bigTable">one table-view</button>
+    <button class="button" onclick="window.location.href='DailyCasesAndDeaths.html'" type="button" id="DailyCasesAndDeaths">DailyCasesAndDeaths</button>
+    <button class="button" onclick="window.location.href='LatestCasesAndDeaths.html'" type="button" id="LatestCases">LastestCases</button>
+    <button class="button" onclick="window.location.href='VaccinationData.html'" type="button" id="VaccinationData">VaccinationData</button>
+    <button class="button" onclick="window.location.href='VaccinationMetaData.html'" type="button" id="Vaccination">VaccinationMetaData</button>
+</div>
+<div align="center">
+    <select id="attribute" name="attribute">
+        <option>iso_code</option>
+        <option>continent</option>
+        <option>location</option>
+        <option>date</option>
+        <option>total_cases</option>
+        <option>new_cases</option>
+        <option>new_cases_smoothed</option>
+        <option>total_deaths</option>
+        <option>new_deaths</option>
+        <option>new_deaths_smoothed</option>
+        <option>total_cases_per_million</option>
+        <option>new_cases_per_million</option>
+        <option>new_cases_smoothed_per_million</option>
+        <option>total_deaths_per_million</option>
+        <option>new_deaths_per_million</option>
+        <option>new_deaths_smoothed_per_million</option>
+        <option>reproduction_rate</option>
+        <option>icu_patients</option>
+        <option>icu_patients_per_million</option>
+        <option>hosp_patients</option>
+        <option>hosp_patients_per_million</option>
+        <option>weekly_icu_admissions</option>
+        <option>weekly_icu_admissions_per_million</option>
+        <option>weekly_hosp_admissions</option>
+        <option>weekly_hosp_admissions_per_million</option>
+        <option>new_tests</option>
+        <option>total_tests</option>
+        <option>total_tests_per_thousand</option>
+        <option>new_tests_per_thousand</option>
+        <option>new_tests_smoothed</option>
+        <option>new_tests_smoothed_per_thousand</option>
+        <option>positive_rate</option>
+        <option>tests_per_case</option>
+        <option>tests_units</option>
+        <option>total_vaccinations</option>
+        <option>people_vaccinated</option>
+        <option>people_fully_vaccinated</option>
+        <option>total_boosters</option>
+        <option>new_vaccinations</option>
+        <option>new_vaccinations_smoothed</option>
+        <option>total_vaccinations_per_hundred</option>
+        <option>people_vaccinated_per_hundred</option>
+        <option>people_fully_vaccinated_per_hundred</option>
+        <option>total_boosters_per_hundred</option>
+        <option>new_vaccinations_smoothed_per_million</option>
+        <option>stringency_index</option>
+        <option>population</option>
+        <option>population_density</option>
+        <option>median_age</option>
+        <option>aged_65_older</option>
+        <option>aged_70_older</option>
+        <option>gdp_per_capita</option>
+        <option>extreme_poverty</option>
+        <option>cardiovasc_death_rate</option>
+        <option>diabetes_prevalence</option>
+        <option>female_smokers</option>
+        <option>male_smokers</option>
+        <option>handwashing_facilities</option>
+        <option>hospital_beds_per_thousand</option>
+        <option>life_expectancy</option>
+        <option>human_development_index</option>
+        <option>excess_mortality_cumulative_absolute</option>
+        <option>excess_mortality_cumulative</option>
+        <option>excess_mortality</option>
+        <option>excess_mortality_cumulative_per_million</option>
+    </select><button onClick="sort(0)">sort</button>
+    <label>
+        <input type="text" name="search" id="search"/>
+    </label>
+    <button onClick="search(0)">search</button>
+</div>
 <table id="table" >
     <caption id="a">
         <h2>Table-View</h2>
     </caption>
     <tbody>
     <tr>
-        <th>Date_reported</th>
-        <th>Country_code</th>
-        <th>Country</th>
-        <th>WHO_region</th>
-        <th>New_cases</th>
-        <th>Cumulative_cases</th>
-        <th>New_deaths</th>
-        <th>Cumulative_deaths</th>
-        <th>Name</th>
-        <th>WHO_region</th>
-        <th>CasesCumulativeTotal</th>
-        <th>CasesCumulativeTotalPer100000</th>
-        <th>CasesNewlyIn7days</th>
-        <th>CasesNewlyIn7daysPer100000</th>
-        <th>CasesReportedIn24hours</th>
-        <th>DeathsCumulativeTotal</th>
-        <th>DeathsCumulativeTotalPer100000</th>
-        <th>DeathsNewlyIn7days</th>
-        <th>DeathsNewlyIn7daysPer100000</th>
-        <th>DeathsReportedIn24hours</th>
-        <th>COUNTRY</th>
-        <th>ISO3</th>
-        <th>WHO_REGION</th>
-        <th>DATA_SOURCE</th>
-        <th>DATE_UPDATED</th>
-        <th>TOTAL_VACCINATIONS</th>
-        <th>PERSONS_VACCINATED_1PLUS_DOSE</th>
-        <th>TOTAL_VACCINATIONS_PER100</th>
-        <th>PERSONS_VACCINATED_1PLUS_DOSE_PER100</th>
-        <th>PERSONS_FULLY_VACCINATED</th>
-        <th>PERSONS_FULLY_VACCINATED_PER100</th>
-        <th>VACCINES_USED</th>
-        <th>FIRST_VACCINE_DATE</th>
-        <th>NUMBER_VACCINES_TYPES_USED</th>
-        <th>ISO3</th>
-        <th>VACCINE_NAME</th>
-        <th>PRODUCT_NAME</th>
-        <th>COMPANY_NAME</th>
-        <th>FIRST_VACCINE_DATE</th>
-        <th>AUTHORIZATION_DATE</th>
-        <th>START_DATE</th>
-        <th>END_DATE</th>
-        <th>COMMENT</th>
-        <th>DATA_SOURCE</th>
+        <th>iso_code</th>
+        <th>continent</th>
+        <th>location</th>
+        <th>date</th>
+        <th>total_cases</th>
+        <th>new_cases</th>
+        <th>new_cases_smoothed</th>
+        <th>total_deaths</th>
+        <th>new_deaths</th>
+        <th>new_deaths_smoothed</th>
+        <th>total_cases_per_million</th>
+        <th>new_cases_per_million</th>
+        <th>new_cases_smoothed_per_million</th>
+        <th>total_deaths_per_million</th>
+        <th>new_deaths_per_million</th>
+        <th>new_deaths_smoothed_per_million</th>
+        <th>reproduction_rate</th>
+        <th>icu_patients</th>
+        <th>icu_patients_per_million</th>
+        <th>hosp_patients</th>
+        <th>hosp_patients_per_million</th>
+        <th>weekly_icu_admissions</th>
+        <th>weekly_icu_admissions_per_million</th>
+        <th>weekly_hosp_admissions</th>
+        <th>weekly_hosp_admissions_per_million</th>
+        <th>new_tests</th>
+        <th>total_tests</th>
+        <th>total_tests_per_thousand</th>
+        <th>new_tests_per_thousand</th>
+        <th>new_tests_smoothed</th>
+        <th>new_tests_smoothed_per_thousand</th>
+        <th>positive_rate</th>
+        <th>tests_per_case</th>
+        <th>tests_units</th>
+        <th>total_vaccinations</th>
+        <th>people_vaccinated</th>
+        <th>people_fully_vaccinated</th>
+        <th>total_boosters</th>
+        <th>new_vaccinations</th>
+        <th>new_vaccinations_smoothed</th>
+        <th>total_vaccinations_per_hundred</th>
+        <th>people_vaccinated_per_hundred</th>
+        <th>people_fully_vaccinated_per_hundred</th>
+        <th>total_boosters_per_hundred</th>
+        <th>new_vaccinations_smoothed_per_million</th>
+        <th>stringency_index</th>
+        <th>population</th>
+        <th>population_density</th>
+        <th>median_age</th>
+        <th>aged_65_older</th>
+        <th>aged_70_older</th>
+        <th>gdp_per_capita</th>
+        <th>extreme_poverty</th>
+        <th>cardiovasc_death_rate</th>
+        <th>diabetes_prevalence</th>
+        <th>female_smokers</th>
+        <th>male_smokers</th>
+        <th>handwashing_facilities</th>
+        <th>hospital_beds_per_thousand</th>
+        <th>life_expectancy</th>
+        <th>human_development_index</th>
+        <th>excess_mortality_cumulative_absolute</th>
+        <th>excess_mortality_cumulative</th>
+        <th>excess_mortality</th>
+        <th>excess_mortality_cumulative_per_million</th>
     </tr>
     <tbody id="tbody" style="display: none">
     <tr>
@@ -109,7 +213,16 @@
     </tbody>
 </table>
 <div align="center">
-    <button onClick="onClickSort()">sort</button>
+    page:
+    <label>
+        <input type="text" name="page" id="page"/>
+    </label>
+    <button onClick="go(0)">go</button>
+    length:
+    <label>
+        <p id="length">
+        </p>
+    </label>
 </div>
 
 <div id="b" style="display: none">

@@ -61,7 +61,18 @@ public class ChartController {
     @RequestMapping(value = "searchVaccinationInformation", method = RequestMethod.GET)
     public ResponseEntity<?> searchVaccinationInformation(String sort,String search) throws Exception {
         return chartService.searchVaccinationInformations(sort,search);
-    }@CrossOrigin(origins = "*")
+    }
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "sortAllInformation", method = RequestMethod.GET)
+    public ResponseEntity<?> sortAllInformation(String sort) throws Exception {
+        return chartService.sortAllInformation(sort);
+    }
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "searchAllInformation", method = RequestMethod.GET)
+    public ResponseEntity<?> searchAllInformation(String sort,String search) throws Exception {
+        return chartService.searchAllInformations(sort,search);
+    }
+    /*@CrossOrigin(origins = "*")
     @RequestMapping(value = "sortVaccinationMetaInformation", method = RequestMethod.GET)
     public ResponseEntity<?> sortVaccinationMetaInformation(String sort) throws Exception {
         return chartService.sortVaccinationMetaInformation(sort);
@@ -70,7 +81,7 @@ public class ChartController {
     @RequestMapping(value = "searchVaccinationMetaInformation", method = RequestMethod.GET)
     public ResponseEntity<?> searchVaccinationMetaInformation(String sort,String search) throws Exception {
         return chartService.searchVaccinationMetaInformations(sort,search);
-    }
+    }*/
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "reloadInformation", method = RequestMethod.GET)
     public ResponseEntity<?> reDownloadInformation(String sort) throws Exception {

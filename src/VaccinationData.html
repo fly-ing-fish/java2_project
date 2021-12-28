@@ -15,18 +15,23 @@
     <button class="button" onclick="window.location.href='DailyCasesAndDeaths.html'" type="button" id="DailyCasesAndDeaths">DailyCasesAndDeaths</button>
     <button class="button" onclick="window.location.href='LatestCasesAndDeaths.html'" type="button" id="LatestCases">LastestCases</button>
     <button class="button" onclick="window.location.href='VaccinationData.html'" type="button" id="VaccinationData">VaccinationData</button>
-    <button class="button" onclick="window.location.href='VaccinationMetaData.html'" type="button" id="Vaccination">VaccinationMetaData</button>
 </div>
 <div align="center">
     <select id="attribute" name="attribute">
-        <option>Date_reported</option>
-        <option>Country_code</option>
-        <option>Country</option>
-        <option>WHO_region</option>
-        <option>New_cases</option>
-        <option>Cumulative_cases</option>
-        <option>New_deaths</option>
-        <option>Cumulative_deaths</option>
+        <option>COUNTRY</option>
+        <option>ISO3</option>
+        <option>WHO_REGION</option>
+        <option>DATA_SOURCE</option>
+        <option>DATE_UPDATED</option>
+        <option>TOTAL_VACCINATIONS</option>
+        <option>PERSONS_VACCINATED_1PLUS_DOSE</option>
+        <option>TOTAL_VACCINATIONS_PER100</option>
+        <option>PERSONS_VACCINATED_1PLUS_DOSE_PER100</option>
+        <option>PERSONS_FULLY_VACCINATED</option>
+        <option>PERSONS_FULLY_VACCINATED_PER100</option>
+        <option>VACCINES_USED</option>
+        <option>FIRST_VACCINE_DATE</option>
+        <option>NUMBER_VACCINES_TYPES_USED</option>
     </select><button onClick="sort(3)">sort</button>
     <label>
         <input type="text" name="search" id="search"/>
@@ -39,14 +44,20 @@
     </caption>
     <tbody>
     <tr>
-        <th>Date_reported</th>
-        <th>Country_code</th>
-        <th>Country</th>
-        <th>WHO_region</th>
-        <th>New_cases</th>
-        <th>Cumulative_cases</th>
-        <th>New_deaths</th>
-        <th>Cumulative_deaths</th>
+        <th>COUNTRY</th>
+        <th>ISO3</th>
+        <th>WHO_REGION</th>
+        <th>DATA_SOURCE</th>
+        <th>DATE_UPDATED</th>
+        <th>TOTAL_VACCINATIONS</th>
+        <th>PERSONS_VACCINATED_1PLUS_DOSE</th>
+        <th>TOTAL_VACCINATIONS_PER100</th>
+        <th>PERSONS_VACCINATED_1PLUS_DOSE_PER100</th>
+        <th>PERSONS_FULLY_VACCINATED</th>
+        <th>PERSONS_FULLY_VACCINATED_PER100</th>
+        <th>VACCINES_USED</th>
+        <th>FIRST_VACCINE_DATE</th>
+        <th>NUMBER_VACCINES_TYPES_USED</th>
     </tr>
     <tbody id="tbody" style="display: none">
     <tr>

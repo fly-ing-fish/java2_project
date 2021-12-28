@@ -23,8 +23,6 @@ public class ChartService {
     static ArrayList<LatestCasesAndDeaths>storedLatestData=new ArrayList<>();
     static ArrayList<VaccinationData> vaccinationData;
     static ArrayList<VaccinationData>storedVaccinationData=new ArrayList<>();
-    static ArrayList<VaccinationMetadata> vaccinationMetadata;
-    static ArrayList<VaccinationMetadata>storedVaccinationMetadata=new ArrayList<>();
     static List<DataRow>dataRows1=Prepare.prepareData();
     static List<DataRow>dataRows2=Prepare.prepareData();
     static {
@@ -35,8 +33,6 @@ public class ChartService {
             storedLatestData.addAll(LatestDataRows);
             vaccinationData = VaccinationData.download();
             storedVaccinationData.addAll(vaccinationData);
-            vaccinationMetadata = VaccinationMetadata.download();
-            storedVaccinationMetadata.addAll(vaccinationMetadata);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -179,8 +175,8 @@ public class ChartService {
             length=LatestDataRows.size();
         }else if(type==3) {
             length=vaccinationData.size();
-        }else if(type==4) {
-            length=vaccinationMetadata.size();
+        }else if(type==0) {
+            length=dataRows1.size();
         }
         for (int i=Math.min((page-1)*10,length);i<Math.min(page*10,length);++i){
             Object deaths = null;
@@ -190,9 +186,8 @@ public class ChartService {
                 deaths=LatestDataRows.get(i);
             }else if(type==3) {
                 deaths=vaccinationData.get(i);
-            }else if(type==4) {
-               deaths=vaccinationMetadata.get(i);
-            }
+            }else if(type==0)
+                deaths=dataRows1.get(i);
             Component component = new Component("", new LinkedList<Object>());
             if(type==1) {
                 component.setData(getValue(DailyCasesAndDeaths.class, deaths));
@@ -200,8 +195,8 @@ public class ChartService {
                 component.setData(getValue(LatestCasesAndDeaths.class, deaths));
             }else if(type==3) {
                 component.setData(getValue(VaccinationData.class, deaths));
-            }else if(type==4) {
-                component.setData(getValue(VaccinationMetadata.class, deaths));
+            }else if(type==0) {
+                component.setData(getValue(DataRow.class, deaths));
             }
             components.add(component);
         }
@@ -209,6 +204,7 @@ public class ChartService {
         temp.put("length",length);
         return new ResponseEntity<>(temp, HttpStatus.OK);
     }
+
     public ResponseEntity<?> searchLatestInformations(String sort,String search) throws Exception{
         Field f=LatestCasesAndDeaths.class.getDeclaredField(sort);
         f.setAccessible(true);
@@ -361,7 +357,7 @@ public class ChartService {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    public ResponseEntity<?> searchVaccinationMetaInformations(String sort,String search) throws Exception{
+    /*public ResponseEntity<?> searchVaccinationMetaInformations(String sort,String search) throws Exception{
         Field f=VaccinationMetadata.class.getDeclaredField(sort);
         f.setAccessible(true);
         if (search.equals("")){
@@ -377,8 +373,8 @@ public class ChartService {
             }
         }).collect(Collectors.toList());
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-    public ResponseEntity<?> sortVaccinationMetaInformation(String sort) throws Exception{
+    }*/
+    /*public ResponseEntity<?> sortVaccinationMetaInformation(String sort) throws Exception{
         Field f=VaccinationMetadata.class.getDeclaredField(sort);
         f.setAccessible(true);
         if (f.getType()==int.class) {
@@ -436,7 +432,7 @@ public class ChartService {
             });
         }
         return new ResponseEntity<>(HttpStatus.OK);
-    }
+    }*/
     public ResponseEntity<?> searchInformations(String sort,String search) throws Exception{
         Field f=DailyCasesAndDeaths.class.getDeclaredField(sort);
         f.setAccessible(true);
@@ -513,6 +509,82 @@ public class ChartService {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    public ResponseEntity<?> searchAllInformations(String sort,String search) throws Exception{
+        Field f=DataRow.class.getDeclaredField(sort);
+        f.setAccessible(true);
+        if (search.equals("")){
+            dataRows1.clear();
+            dataRows1.addAll(dataRows2);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        dataRows1= (ArrayList<DataRow>) dataRows1.stream().filter(new Predicate<DataRow>() {
+            @SneakyThrows
+            @Override
+            public boolean test(DataRow dailyCasesAndDeaths) {
+                return String.valueOf(f.get(dailyCasesAndDeaths)).contains(search);
+            }
+        }).collect(Collectors.toList());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    public ResponseEntity<?> sortAllInformation(String sort) throws Exception{
+        Field f=DataRow.class.getDeclaredField(sort);
+        f.setAccessible(true);
+        if (f.getType()==int.class) {
+            dataRows1.sort(new Comparator<>() {
+                @SneakyThrows
+                @Override
+                public int compare(DataRow o1, DataRow o2) {
+                    int temp1 = (int) f.get(o1);
+                    int temp2 = (int) f.get(o2);
+                    if (temp1 < temp2) {
+                        return 1;
+                    } else if (temp1 > temp2) {
+                        return -1;
+                    }
+                    return 0;
+                }
+            });
+        }else if(f.getType()==String.class){
+            dataRows1.sort(new Comparator<DataRow>() {
+                @SneakyThrows
+                @Override
+                public int compare(DataRow o1, DataRow o2) {
+                    String temp1=String.valueOf(f.get(o1));
+                    String temp2=String.valueOf(f.get(o2));
+                    return temp1.compareTo(temp2);
+                }
+            });
+        }else if (f.getType()==double.class) {
+            dataRows1.sort(new Comparator<DataRow>() {
+                @SneakyThrows
+                @Override
+                public int compare(DataRow o1, DataRow o2) {
+                    double temp1=(double)f.get(o1);
+                    double temp2=(double)f.get(o2);
+                    if (temp1<temp2){
+                        return 1;
+                    }else if (temp1>temp2){
+                        return -1;
+                    }return 0;
+                }
+            });
+        }else {
+            dataRows1.sort(new Comparator<DataRow>() {
+                @SneakyThrows
+                @Override
+                public int compare(DataRow o1, DataRow o2) {
+                    LocalDate temp1=(LocalDate) f.get(o1);
+                    LocalDate temp2=(LocalDate) f.get(o2);
+                    if (temp1.isAfter(temp2)){
+                        return -1;
+                    }else if (temp1.isBefore(temp2)){
+                        return 1;
+                    }return 0;
+                }
+            });
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     public static List<Object> getValue(Class<?>clazz, Object deaths ) throws IllegalAccessException {
         List<Object> object=new ArrayList<>();
         for (Field field:clazz.getDeclaredFields()){
@@ -522,7 +594,7 @@ public class ChartService {
     }
 
     public ResponseEntity<?> getLineInformation4() throws Exception {
-        ArrayList<VaccinationMetadata> dataRows = VaccinationMetadata.download();
+        //ArrayList<VaccinationMetadata> dataRows = VaccinationMetadata.download();
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
