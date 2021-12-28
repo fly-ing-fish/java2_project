@@ -6,7 +6,16 @@
     <title>Title</title>
     <script type="text/javascript" src="table.js"></script>
 </head>
-<body onload="initial()" >
+<body onload="initial(1)" >
+<div align="center">
+    <button class="button" onclick="window.location.href='chart.html'" type="button" id="chart">chart</button>
+    <button class="button" onclick="window.location.href='bar.html'" type="button" id="bar">bar</button>
+    <button class="button" onclick="window.location.href='pie.html'" type="button" id="pie">pie</button>
+    <button class="button" onclick="window.location.href='Table.html'" type="button" id="bigTable">one table-view</button>
+    <button class="button" onclick="window.location.href='LatestCasesAndDeaths.html'" type="button" id="LatestCases">LastestCases</button>
+    <button class="button" onclick="window.location.href='VaccinationData.html'" type="button" id="VaccinationData">VaccinationData</button>
+    <button class="button" onclick="window.location.href='VaccinationMetaData.html'" type="button" id="Vaccination">VaccinationMetaData</button>
+</div>
 <div align="center">
     <select id="attribute" name="attribute">
         <option>Date_reported</option>
@@ -17,11 +26,11 @@
         <option>Cumulative_cases</option>
         <option>New_deaths</option>
         <option>Cumulative_deaths</option>
-</select><button onClick="sort()">sort</button>
+</select><button onClick="sort(1)">sort</button>
     <label>
         <input type="text" name="search" id="search"/>
     </label>
-    <button onClick="search()">search</button>
+    <button onClick="search(1)">search</button>
 </div>
 <table id="table" >
     <caption id="a">
@@ -59,7 +68,7 @@ page:
 <label>
     <input type="text" name="page" id="page"/>
 </label>
-    <button onClick="go()">go</button>
+    <button onClick="go(1)">go</button>
     length:
     <label>
     <p id="length">

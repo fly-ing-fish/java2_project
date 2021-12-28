@@ -98,7 +98,7 @@
     show(jsonObj)
     }
     };
-    response.open("GET","http://localhost:8083/api/getLineInformation",true);
+    response.open("GET","http://localhost:8082/api/getLineInformation",true);
     // response.open("GET","http://localhost:8082/api/getBarInformation",true);
     response.send()
     function show(jsonObj){
@@ -111,11 +111,11 @@
     }
 
     function update1(){
-        response.open("POST","http://localhost:8083/api/updateGitHub",true);
+        response.open("PUT","http://localhost:8082/api/updateGiuHub",true);
         response.send()
     }
     function update2(){
-        response.open("POST","http://localhost:8083/api/updateWho",true);
+        response.open("PUT","http://localhost:8082/api/updateWho",true);
         response.send()
     }
 </script>

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 public class UseMsedge {
-    static String downloadLocation = "C:\\Users\\hp\\Desktop\\";
+    static String downloadLocation = "D:\\";
     public static void openBrowser (String url) throws Exception {
         // 浏览器要打开的链接URL
 //        String url = "https://covid19.who.int/who-data/vaccination-metadata.csv";

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="table.css" xmlns="http://www.w3.org/1999/html"/>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="table.js"></script>
+</head>
+<body onload="initial(3)" >
+<div align="center">
+    <button class="button" onclick="window.location.href='chart.html'" type="button" id="chart">chart</button>
+    <button class="button" onclick="window.location.href='bar.html'" type="button" id="bar">bar</button>
+    <button class="button" onclick="window.location.href='pie.html'" type="button" id="pie">pie</button>
+    <button class="button" onclick="window.location.href='Table.html'" type="button" id="bigTable">one table-view</button>
+    <button class="button" onclick="window.location.href='LatestCasesAndDeaths.html'" type="button" id="LatestCases">LastestCases</button>
+    <button class="button" onclick="window.location.href='VaccinationData.html'" type="button" id="VaccinationData">VaccinationData</button>
+    <button class="button" onclick="window.location.href='VaccinationMetaData.html'" type="button" id="Vaccination">VaccinationMetaData</button>
+</div>
+<div align="center">
+    <select id="attribute" name="attribute">
+        <option>Date_reported</option>
+        <option>Country_code</option>
+        <option>Country</option>
+        <option>WHO_region</option>
+        <option>New_cases</option>
+        <option>Cumulative_cases</option>
+        <option>New_deaths</option>
+        <option>Cumulative_deaths</option>
+    </select><button onClick="sort(3)">sort</button>
+    <label>
+        <input type="text" name="search" id="search"/>
+    </label>
+    <button onClick="search(3)">search</button>
+</div>
+<table id="table" >
+    <caption id="a">
+        <h2>Table-View</h2>
+    </caption>
+    <tbody>
+    <tr>
+        <th>Date_reported</th>
+        <th>Country_code</th>
+        <th>Country</th>
+        <th>WHO_region</th>
+        <th>New_cases</th>
+        <th>Cumulative_cases</th>
+        <th>New_deaths</th>
+        <th>Cumulative_deaths</th>
+    </tr>
+    <tbody id="tbody" style="display: none">
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    </tbody>
+</table>
+<!--<div align="center">
+</div>-->
+<div align="center">
+    page:
+    <label>
+        <input type="text" name="page" id="page"/>
+    </label>
+    <button onClick="go(3)">go</button>
+    length:
+    <label>
+        <p id="length">
+        </p>
+    </label>
+</div>
+<!--<div align="center">
+    <button onClick="clickme()">add hotel</button>
+</div>-->
+
+<div id="b" style="display: none">
+    <form name="form1">
+        Hotel Name:
+        <label>
+            <input type="text" name="Hotel_Name" id="Hotel_Name"/>
+        </label>
+        <br/> City:
+        <label><input name="City" type="radio" onchange="setDistrict()" value="GuangZhou" />Guang Zhou </label>
+        <label><input name="City" type="radio" onchange="setDistrict()" value="ShenZhen" />Shen Zhen </label>
+        <br/> District:
+        <label for="District"></label><select id="District"></select>
+        <br/> Date:
+        <label>
+            <input type="date" name="date" id="date">
+        </label>
+        <br/> Earliest check-in time:
+        <label>
+            <input type="time" name="time" value="23:59:59" id="time"/>
+        </label>
+        <br/> Price:
+        <label>
+            <input type="text" name="Price" id="Price"/>
+        </label>
+        <br/> Room Type:
+        <label for="Room Type"></label><select id="Room Type">
+        <option>Standard Room</option>
+        <option>King Bed Room</option>
+        <option>Family Room</option>
+        <option>Presidential Suite</option>
+    </select>
+        <br/>
+        <input type="button" value="sort" onclick="onClickSort()"><br>
+        <br/>
+    </form>
+</div>
+
+</body>

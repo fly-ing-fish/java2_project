@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="table.css" xmlns="http://www.w3.org/1999/html"/>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="table.js"></script>
+</head>
+<body onload="initial(2)" >
+<div align="center">
+    <button class="button" onclick="window.location.href='chart.html'" type="button" id="chart">chart</button>
+    <button class="button" onclick="window.location.href='bar.html'" type="button" id="bar">bar</button>
+    <button class="button" onclick="window.location.href='Table.html'" type="button" id="bigTable">one table-view</button>
+    <button class="button" onclick="window.location.href='Table.html'" type="button" id="DailyCasesAndDeaths">DailyCasesAndDeaths</button>
+    <button class="button" onclick="window.location.href='Table.html'" type="button" id="VaccinationData">VaccinationData</button>
+    <button class="button" onclick="window.location.href='Table.html'" type="button" id="Vaccination">VaccinationMetaData</button>
+</div>
+<div align="center">
+    <select id="attribute" name="attribute">
+        <option>Name</option>
+        <option>WHO_region</option>
+        <option>CasesCumulativeTotal</option>
+        <option>CasesCumulativeTotalPer100000</option>
+        <option>CasesNewlyIn7days</option>
+        <option>CasesNewlyIn7daysPer100000</option>
+        <option>CasesReportedIn24hours</option>
+        <option>DeathsCumulativeTotal</option>
+        <option>DeathsCumulativeTotalPer100000</option>
+        <option>DeathsNewlyIn7days</option>
+        <option>DeathsNewlyIn7daysPer100000</option>
+        <option>DeathsReportedIn24hours</option>
+    </select><button onClick="sort(2)">sort</button>
+    <label>
+        <input type="text" name="search" id="search"/>
+    </label>
+    <button onClick="search(2)">search</button>
+</div>
+<table id="table" >
+    <caption id="a">
+        <h2>Table-View</h2>
+    </caption>
+    <tbody>
+    <tr>
+        <th>Name</th>
+        <th>WHO_region</th>
+        <th>CasesCumulativeTotal</th>
+        <th>CasesCumulativeTotalPer100000</th>
+        <th>CasesNewlyIn7days</th>
+        <th>CasesNewlyIn7daysPer100000</th>
+        <th>CasesReportedIn24hours</th>
+        <th>DeathsCumulativeTotal</th>
+        <th>DeathsCumulativeTotalPer100000</th>
+        <th>DeathsNewlyIn7days</th>
+        <th>DeathsNewlyIn7daysPer100000</th>
+        <th>DeathsReportedIn24hours</th>
+    </tr>
+    <tbody id="tbody" style="display: none">
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    </tbody>
+</table>
+<!--<div align="center">
+</div>-->
+<div align="center">
+    page:
+    <label>
+        <input type="text" name="page" id="page"/>
+    </label>
+    <button onClick="go(2)">go</button>
+    length:
+    <label>
+        <p id="length">
+        </p>
+    </label>
+</div>
+<!--<div align="center">
+    <button onClick="clickme()">add hotel</button>
+</div>-->
+
+<div id="b" style="display: none">
+    <form name="form1">
+        Hotel Name:
+        <label>
+            <input type="text" name="Hotel_Name" id="Hotel_Name"/>
+        </label>
+        <br/> City:
+        <label><input name="City" type="radio" onchange="setDistrict()" value="GuangZhou" />Guang Zhou </label>
+        <label><input name="City" type="radio" onchange="setDistrict()" value="ShenZhen" />Shen Zhen </label>
+        <br/> District:
+        <label for="District"></label><select id="District"></select>
+        <br/> Date:
+        <label>
+            <input type="date" name="date" id="date">
+        </label>
+        <br/> Earliest check-in time:
+        <label>
+            <input type="time" name="time" value="23:59:59" id="time"/>
+        </label>
+        <br/> Price:
+        <label>
+            <input type="text" name="Price" id="Price"/>
+        </label>
+        <br/> Room Type:
+        <label for="Room Type"></label><select id="Room Type">
+        <option>Standard Room</option>
+        <option>King Bed Room</option>
+        <option>Family Room</option>
+        <option>Presidential Suite</option>
+    </select>
+        <br/>
+        <input type="button" value="sort" onclick="onClickSort()"><br>
+        <br/>
+    </form>
+</div>
+
+</body>

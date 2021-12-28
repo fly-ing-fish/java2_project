@@ -9,27 +9,71 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
 public class ChartService {
-//    List<DataRow> dataRows = Prepare.prepareData();
+    //    List<DataRow> dataRows = Prepare.prepareData();
     static ArrayList<DailyCasesAndDeaths> dataRows;
     static ArrayList<DailyCasesAndDeaths>storedData=new ArrayList<>();
+    static ArrayList<LatestCasesAndDeaths> LatestDataRows;
+    static ArrayList<LatestCasesAndDeaths>storedLatestData=new ArrayList<>();
+    static ArrayList<VaccinationData> vaccinationData;
+    static ArrayList<VaccinationData>storedVaccinationData=new ArrayList<>();
+    static ArrayList<VaccinationMetadata> vaccinationMetadata;
+    static ArrayList<VaccinationMetadata>storedVaccinationMetadata=new ArrayList<>();
+    static List<DataRow>dataRows1=Prepare.prepareData();
     static {
         try {
-            dataRows = DailyCasesAndDeaths.update();
+            dataRows = DailyCasesAndDeaths.download();
             storedData.addAll(dataRows);
+            LatestDataRows = LatestCasesAndDeaths.download();
+            storedLatestData.addAll(LatestDataRows);
+          //  vaccinationData = VaccinationData.download();
+          //  storedVaccinationData.addAll(vaccinationData);
+          //  vaccinationMetadata = VaccinationMetadata.download();
+          //  storedVaccinationMetadata.addAll(vaccinationMetadata);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    public ResponseEntity<?> getLineInformation() throws IOException {
+        ArrayList<DailyCasesAndDeaths> dataRows = DailyCasesAndDeaths.download();
+        HashMap<String, Component> hashMap = new HashMap<>();
+        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
+        List<String> strings = new LinkedList<>();
+        List<Component> components = new LinkedList<>();
+        for (DailyCasesAndDeaths tem : dataRows) {
+            if (hashMap.size() > 15) {
+                break;
+            }
+            double temp1 = tem.getNew_cases();
+            if (!hashMap.containsKey(tem.getCountry())) {
+                Component component = new Component(tem.getCountry(), new LinkedList<Object>());
+                component.getData().add(temp1);
+                hashMap.put(tem.getCountry(), component);
+                strings.add(component.getName());
+                components.add(component);
+            } else {
+                if (hashMap.get(tem.getCountry()).getData().size() <= 30) {
+                    hashMap.get(tem.getCountry()).getData().add(temp1);
+                }
+            }
+        }
+        HashMap<String, Object> temp = new HashMap<>();
+        temp.put("data", strings);
+        stringObjectHashMap.put("name", temp);
+        stringObjectHashMap.put("type", "line");
+        stringObjectHashMap.put("data", components);
+        return new ResponseEntity<>(stringObjectHashMap, HttpStatus.OK);
+    }
     public ResponseEntity<?> getLineInformation1() throws IOException {
-        ArrayList<DailyCasesAndDeaths> dataRows = DailyCasesAndDeaths.update();
-
+        ArrayList<DailyCasesAndDeaths> dataRows = DailyCasesAndDeaths.download();
         HashMap<String, Component> hashMap = new HashMap<>();
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();
         List<String> strings = new LinkedList<>();
@@ -60,7 +104,7 @@ public class ChartService {
     }
 
     public ResponseEntity<?> getLineInformation2() throws IOException {
-        ArrayList<LatestCasesAndDeaths> dataRows = LatestCasesAndDeaths.update();
+        ArrayList<LatestCasesAndDeaths> dataRows = LatestCasesAndDeaths.download();
         HashMap<String, Component> hashMap = new HashMap<>();
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();
         List<String> strings = new LinkedList<>();
@@ -91,9 +135,7 @@ public class ChartService {
     }
 
     public ResponseEntity<?> getLineInformation3() throws Exception {
-        readDataFromWho.download();
-        readDataFromGithub.download();
-        ArrayList<VaccinationData> dataRows = VaccinationData.update();
+        ArrayList<VaccinationData> dataRows = VaccinationData.download();
 
         HashMap<String, Component> hashMap = new HashMap<>();
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();
@@ -124,20 +166,47 @@ public class ChartService {
         return new ResponseEntity<>(stringObjectHashMap, HttpStatus.OK);
     }
     public ResponseEntity<?> redownload() throws Exception{
-        dataRows = DailyCasesAndDeaths.update();
+        dataRows = DailyCasesAndDeaths.download();
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    public ResponseEntity<?> getInformations(int page) throws Exception{
+    public ResponseEntity<?> getInformations(int type,int page) throws Exception{
         HashMap<String, Object> temp = new HashMap<>();
         List<Component> components = new LinkedList<>();
-        for (int i=Math.min((page-1)*10,dataRows.size());i<Math.min(page*10,dataRows.size());++i){
-            DailyCasesAndDeaths deaths=dataRows.get(i);
-            Component component = new Component(deaths.getCountry(), new LinkedList<Object>());
-            component.setData(getValue(DailyCasesAndDeaths.class,deaths));
+        int length=0;
+        if(type==1) {
+            length=dataRows.size();
+        }else if(type==2) {
+            length=LatestDataRows.size();
+        }else if(type==3) {
+            length=vaccinationData.size();
+        }else if(type==4) {
+            length=vaccinationMetadata.size();
+        }
+        for (int i=Math.min((page-1)*10,length);i<Math.min(page*10,length);++i){
+            Object deaths = null;
+            if(type==1) {
+                deaths=dataRows.get(i);
+            }else if(type==2) {
+                deaths=LatestDataRows.get(i);
+            }else if(type==3) {
+                deaths=vaccinationData.get(i);
+            }else if(type==4) {
+               deaths=vaccinationMetadata.get(i);
+            }
+            Component component = new Component("", new LinkedList<Object>());
+            if(type==1) {
+                component.setData(getValue(DailyCasesAndDeaths.class, deaths));
+            }else if(type==2) {
+                component.setData(getValue(LatestCasesAndDeaths.class, deaths));
+            }else if(type==3) {
+                component.setData(getValue(VaccinationData.class, deaths));
+            }else if(type==4) {
+                component.setData(getValue(VaccinationMetadata.class, deaths));
+            }
             components.add(component);
         }
         temp.put("table",components);
-        temp.put("length",dataRows.size());
+        temp.put("length",length);
         return new ResponseEntity<>(temp, HttpStatus.OK);
     }
     public ResponseEntity<?> searchInformations(String sort,String search) throws Exception{
@@ -161,17 +230,18 @@ public class ChartService {
         Field f=DailyCasesAndDeaths.class.getDeclaredField(sort);
         f.setAccessible(true);
         if (f.getType()==int.class) {
-            dataRows.sort(new Comparator<DailyCasesAndDeaths>() {
+            dataRows.sort(new Comparator<>() {
                 @SneakyThrows
                 @Override
                 public int compare(DailyCasesAndDeaths o1, DailyCasesAndDeaths o2) {
-                    int temp1=(int)f.get(o1);
-                    int temp2=(int)f.get(o2);
-                    if (temp1<temp2){
+                    int temp1 = (int) f.get(o1);
+                    int temp2 = (int) f.get(o2);
+                    if (temp1 < temp2) {
                         return 1;
-                    }else if (temp1>temp2){
+                    } else if (temp1 > temp2) {
                         return -1;
-                    }return 0;
+                    }
+                    return 0;
                 }
             });
         }else if(f.getType()==String.class){
@@ -181,7 +251,7 @@ public class ChartService {
                 public int compare(DailyCasesAndDeaths o1, DailyCasesAndDeaths o2) {
                     String temp1=String.valueOf(f.get(o1));
                     String temp2=String.valueOf(f.get(o2));
-                   return temp1.compareTo(temp2);
+                    return temp1.compareTo(temp2);
                 }
             });
         }else if (f.getType()==double.class) {
@@ -203,12 +273,12 @@ public class ChartService {
                 @SneakyThrows
                 @Override
                 public int compare(DailyCasesAndDeaths o1, DailyCasesAndDeaths o2) {
-                    double temp1=(double)f.get(o1);
-                    double temp2=(double)f.get(o2);
-                    if (temp1<temp2){
-                        return 1;
-                    }else if (temp1>temp2){
+                    LocalDate temp1=(LocalDate) f.get(o1);
+                    LocalDate temp2=(LocalDate) f.get(o2);
+                    if (temp1.isAfter(temp2)){
                         return -1;
+                    }else if (temp1.isBefore(temp2)){
+                        return 1;
                     }return 0;
                 }
             });
@@ -219,12 +289,12 @@ public class ChartService {
         List<Object> object=new ArrayList<>();
         for (Field field:clazz.getDeclaredFields()){
             field.setAccessible(true);
-           object.add(field.get(deaths));
+            object.add(field.get(deaths));
         }return object;
     }
 
     public ResponseEntity<?> getLineInformation4() throws Exception {
-//        ArrayList<VaccinationMetadata> dataRows = VaccinationMetadata.download();
+        ArrayList<VaccinationMetadata> dataRows = VaccinationMetadata.download();
 //
 //        HashMap<String, Component> hashMap = new HashMap<>();
 //        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
@@ -257,41 +327,72 @@ public class ChartService {
     }
 
 
-    //    public ResponseEntity<?> getBarInformation() {
-//        HashMap<String, Component> hashMap = new HashMap<>();
-//        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
-//        List<String> strings = new LinkedList<>();
-//        List<Component> components = new LinkedList<>();
-//        for (DataRow dataRow : dataRows) {
-//            if (hashMap.size() > 15) {
-//                break;
-//            }
-//            double temp1 = dataRow.getNew_cases();
-//            if (!hashMap.containsKey(dataRow.getLocation())) {
-//                Component component = new Component(dataRow.getLocation(), new LinkedList<Double>());
-//                component.getData().add(temp1);
-//                component.setType("bar");
-//                hashMap.put(dataRow.getLocation(), component);
-//                strings.add(component.getName());
-//                components.add(component);
-//            } else {
-//                if (hashMap.get(dataRow.getLocation()).getData().size() <= 30) {
-//                    hashMap.get(dataRow.getLocation()).getData().add(temp1);
-//                }
-//            }
-//        }
-//        HashMap<String, Object> temp = new HashMap<>();
-//        temp.put("data", strings);
-//        stringObjectHashMap.put("name", temp);
-//        stringObjectHashMap.put("type", "bar");
-//        stringObjectHashMap.put("data", components);
-//        return new ResponseEntity<>(stringObjectHashMap, HttpStatus.OK);
-//    }
+    public ResponseEntity<?> getBarInformation() throws IOException {
+        ArrayList<DailyCasesAndDeaths> dataRows = DailyCasesAndDeaths.download();
+        HashMap<String, Component> hashMap = new HashMap<>();
+        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
+        List<String> strings = new LinkedList<>();
+        List<Component> components = new LinkedList<>();
+        for (DailyCasesAndDeaths tem : dataRows) {
+            if (hashMap.size() > 15) {
+                break;
+            }
+            double temp1 = tem.getNew_cases();
+            if (!hashMap.containsKey(tem.getCountry())) {
+                Component component = new Component(tem.getCountry(), new LinkedList<Object>());
+                component.setType("bar");
+                component.getData().add(temp1);
+                hashMap.put(tem.getCountry(), component);
+                strings.add(component.getName());
+                components.add(component);
+            } else {
+                if (hashMap.get(tem.getCountry()).getData().size() <= 30) {
+                    hashMap.get(tem.getCountry()).getData().add(temp1);
+                }
+            }
+        }
+        HashMap<String, Object> temp = new HashMap<>();
+        temp.put("data", strings);
+        stringObjectHashMap.put("name", temp);
+        stringObjectHashMap.put("type", "bar");
+        stringObjectHashMap.put("data", components);
+        return new ResponseEntity<>(stringObjectHashMap, HttpStatus.OK);
+    }
+    public ResponseEntity<?> getPieInformation() throws IOException {
+        ArrayList<DailyCasesAndDeaths> dataRows = DailyCasesAndDeaths.download();
+        HashMap<String, Component> hashMap = new HashMap<>();
+        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
+        List<String> strings = new LinkedList<>();
+        List<Component> components = new LinkedList<>();
+        for (DailyCasesAndDeaths tem : dataRows) {
+            if (hashMap.size() > 15) {
+                break;
+            }
+            double temp1 = tem.getNew_cases();
+            if (!hashMap.containsKey(tem.getCountry())) {
+                Component component = new Component(tem.getCountry(), new LinkedList<Object>());
+                component.setType("bar");
+                component.getData().add(temp1);
+                hashMap.put(tem.getCountry(), component);
+                strings.add(component.getName());
+                components.add(component);
+            } else {
+                if (hashMap.get(tem.getCountry()).getData().size() <= 30) {
+                    hashMap.get(tem.getCountry()).getData().add(temp1);
+                }
+            }
+        }
+        HashMap<String, Object> temp = new HashMap<>();
+        temp.put("data", strings);
+        stringObjectHashMap.put("name", temp);
+        stringObjectHashMap.put("type", "bar");
+        stringObjectHashMap.put("data", components);
+        return new ResponseEntity<>(stringObjectHashMap, HttpStatus.OK);
+    }
     public ResponseEntity<?> updateGiuHub() throws Exception {
         System.out.println();
         System.out.println("read data from gitHub");
         readDataFromGithub.download();
-        readDataFromWho.update();
         System.out.println("success");
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
@@ -300,8 +401,8 @@ public class ChartService {
         System.out.println();
         System.out.println("read data from Who");
         readDataFromWho.download();
-        readDataFromWho.update();
         System.out.println("success");
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
+
 }

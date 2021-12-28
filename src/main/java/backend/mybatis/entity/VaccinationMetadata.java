@@ -12,7 +12,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.Serializable;
 
@@ -30,18 +29,21 @@ public class VaccinationMetadata implements Serializable {
     String COMMENT;
     String DATA_SOURCE;
 
-    public static void download() throws Exception {
-        String downLoadPath = UseMsedge.downloadLocation + "vaccination-metadata.csv";
-        String path = "src/main/java/backend/tables/VaccinationMetadata.csv";
-        URL url = new URL("https://covid19.who.int/who-data/vaccination-metadata.csv");
-        UseMsedge.openBrowser(url.toString());
-        UseMsedge.closeBrowse();
-        UseMsedge.moveFile(downLoadPath, path);
-    }
-
-    public static ArrayList<VaccinationMetadata> update() throws Exception {
+    public static ArrayList<VaccinationMetadata> download() throws IOException {
         ArrayList<VaccinationMetadata> res = new ArrayList<>();
         String path = "src/main/java/backend/tables/VaccinationMetadata.csv";
+        URL url = new URL("https://covid19.who.int/who-data/vaccination-metadata.csv");
+        InputStream inputStream = url.openStream();
+        File f = new File(path);
+        OutputStream outputStream = new FileOutputStream(f);
+        int byteCount = 0;
+        byte[] bytes = new byte[1024*1024*1024];
+        while ((byteCount = inputStream.read(bytes)) != -1) {
+            outputStream.write(bytes, 0, byteCount);
+        }
+        inputStream.close();
+        outputStream.close();
+
         String charset = "utf-8";
         try (CSVReader csvReader = new CSVReaderBuilder(new BufferedReader(new InputStreamReader(new FileInputStream(new File(path)), charset))).build()) {
             Iterator<String[]> iterator = csvReader.iterator();
@@ -58,29 +60,12 @@ public class VaccinationMetadata implements Serializable {
                 tem.VACCINE_NAME = colums[1];
                 tem.PRODUCT_NAME = colums[2];
                 tem.COMPANY_NAME = colums[3];
-//                if(colums[4].equals("0")){
-//                    tem.FIRST_VACCINE_DATE =null;
-//                }else {
-//                    tem.FIRST_VACCINE_DATE = LocalDate.parse(colums[4]);
-//                }
-                if(colums[4].equals("0")){
-                    tem.AUTHORIZATION_DATE =null;
-                }else {
-                    tem.AUTHORIZATION_DATE = LocalDate.parse(colums[4]);
-                }
-                if(colums[5].equals("0")){
-                    tem.START_DATE =null;
-                }else {
-                    tem.START_DATE = LocalDate.parse(colums[5]);
-                }
-                if(colums[6].equals("0")){
-                    tem.END_DATE = null;
-                }else {
-                    tem.END_DATE = LocalDate.parse(colums[6]);
-                }
-
-                tem.COMMENT = colums[7];
-                tem.DATA_SOURCE = colums[8];
+                tem.FIRST_VACCINE_DATE = LocalDate.parse(colums[4]);
+                tem.AUTHORIZATION_DATE = LocalDate.parse(colums[5]);
+                tem.START_DATE = LocalDate.parse(colums[6]);
+                tem.END_DATE = LocalDate.parse(colums[7]);
+                tem.COMMENT = colums[8];
+                tem.DATA_SOURCE = colums[9];
                 res.add(tem);
 
             }

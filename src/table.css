@@ -10,6 +10,13 @@ body {
 p{
 display: inline;
 }
+button {
+        align-self: center;
+        text-align: center;
+        color: #0c040a;
+        background-color: #1dc0af;
+        font-size:larger;
+    }
 table {
     border:1px solid #bbe1f1;
     background:#eefaff;

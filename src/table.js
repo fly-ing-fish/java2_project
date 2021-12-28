@@ -51,58 +51,79 @@ function validateInput(HotelName) {
     return true
 }
 const response = new XMLHttpRequest();
-function initial() {
+function initial(type) {
     response.onload= function () {
         if (response.status === 200) {
             console.log(response)
             let jsonObj = JSON.parse(response.responseText)
             if(jsonObj!=null) {
-                console.log(jsonObj['length'])
-                console.log(jsonObj)
                 document.getElementById("length").innerHTML = jsonObj['length']
-                for (let num = 0; num < 10; num++) {
+
+                for (let num = 0; num < jsonObj['table'].length; num++) {
+                    console.log(jsonObj['table'].length)
                     addRow(jsonObj['table'][num], num + 1);
+                }
+                for (let num = 10; num >= jsonObj['table'].length+1; num--) {
+                    let bodyObj = document.getElementById("tbody");
+                    console.log(num)
+                    removeRow(bodyObj.rows[num])
+
                 }
             }
         }
     }
-    response.open("GET","http://localhost:8083/api/getInformation?page=1",true);
+    console.log(type)
+    response.open("GET","http://localhost:8082/api/getInformation?type="+type+"&&page=1",true);
     console.log(response)
     response.send();
 }
-function onClickSort() {
-
-    response.open("GET","http://localhost:8083/api/sortInformation",true);
-    console.log(response)
-    response.send();
-}
-function onClick() {
-    response.open("GET","http://localhost:8083/api/searchInformation",true);
-    console.log(response)
-    response.send();
-}
-function go() {
+function go(type) {
     let page = document.getElementById("page").value;
-    response.open("GET","http://localhost:8083/api/getInformation?page="+page,true);
+    response.open("GET","http://localhost:8082/api/getInformation?type="+type+"&&page="+page,true);
     console.log(response)
     response.send();
 }
-function sort(){
+function sort(type){
     let attribute=document.getElementById("attribute").value;
-    response.open("GET","http://localhost:8083/api/sortInformation?sort="+attribute,true);
-    response.send();
-    response.open("GET","http://localhost:8083/api/getInformation?page=1",true);
-    console.log(response)
-    response.send();
+    let sort = new XMLHttpRequest();
+    sort.onload= function () {
+        if (sort.status === 200) {
+            response.open("GET","http://localhost:8082/api/getInformation?type="+type+"&&page=1",true);
+            response.send();
+        }
+    }
+    if (type===1) {
+        sort.open("GET", "http://localhost:8082/api/sortInformation?sort=" + attribute, true);
+        sort.send();
+    }else if (type===2) {
+        sort.open("GET", "http://localhost:8082/api/sortLatestInformation?sort=" + attribute, true);
+        sort.send();
+    }else if (type===3) {
+        sort.open("GET", "http://localhost:8082/api/sortInformation?sort=" + attribute, true);
+        sort.send();
+    }else if (type===4) {
+        sort.open("GET", "http://localhost:8082/api/sortLatestInformation?sort=" + attribute, true);
+        sort.send();
+    }
+
 }
-function search(){
+function search(type){
     let attribute=document.getElementById("attribute").value;
     let search=document.getElementById("search").value;
-    response.open("GET","http://localhost:8083/api/searchInformation?sort="+attribute+"&&search="+search,true);
-    response.send();
-    response.open("GET","http://localhost:8083/api/getInformation?page=1",true);
-    console.log(response)
-    response.send();
+    let searchRequest = new XMLHttpRequest();
+    searchRequest.onload= function () {
+        if (searchRequest.status === 200) {
+            response.open("GET","http://localhost:8082/api/getInformation?type="+type+"&&page=1",true);
+            response.send();
+        }
+    }
+    if(type===1) {
+        searchRequest.open("GET", "http://localhost:8082/api/searchInformation?sort=" + attribute + "&&search=" + search, true);
+        searchRequest.send();
+    }else if(type===2){
+        searchRequest.open("GET", "http://localhost:8082/api/searchLatestInformation?sort=" + attribute + "&&search=" + search, true);
+        searchRequest.send();
+    }
 }
 function setDistrict() {
     let City = document.querySelector('form input[name="City"]:checked').value;
@@ -148,7 +169,5 @@ function addRow(series,j) {
 function removeRow(inputobj) {
     if (!inputobj) return;
     let parentTD = inputobj.parentNode;
-    let parentTR = parentTD.parentNode;
-    let parentTBODY = parentTR.parentNode;
-    parentTBODY.removeChild(parentTR);
+    parentTD.removeChild(inputobj);
 }

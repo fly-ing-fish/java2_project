@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 
 public class TH {
     public static void main(String[] args) {
-        Class<?>temp= DailyCasesAndDeaths.class;
+        Class<?>temp= LatestCasesAndDeaths.class;
         for(Field field:temp.getDeclaredFields())
             System.out.println("<option>"+field.getName()+"</option>");
         for(Field field:temp.getDeclaredFields())
