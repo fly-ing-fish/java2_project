@@ -174,7 +174,22 @@ function addRow(series,j) {
                 bodyObj.rows[j].cells[i].innerHTML = series.data[i]
         }
     }
-
+}
+function download(type){
+    let searchRequest = new XMLHttpRequest();
+    searchRequest.onload= function () {
+        if (searchRequest.status === 200) {
+            const data = response.responseText['data'] // 这里填CSV内容的字符串
+            const blob = new Blob([data], {type: "text/plain"})
+            const link = document.createElement("a")
+            link.href = URL.createObjectURL(blob)
+            link.download = "file.text" // 这里填保存成的文件名
+            link.click()
+            URL.revokeObjectURL(link.href)
+        }
+    };
+    searchRequest.open("GET","http://localhost:8082/api/download1?what="+type,true);
+    searchRequest.send();
 }
 
 function removeRow(inputobj) {

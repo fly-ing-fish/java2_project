@@ -5,6 +5,7 @@ import backend.service.ChartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 
@@ -72,22 +73,18 @@ public class ChartController {
     public ResponseEntity<?> searchAllInformation(String sort,String search) throws Exception {
         return chartService.searchAllInformations(sort,search);
     }
-    /*@CrossOrigin(origins = "*")
-    @RequestMapping(value = "sortVaccinationMetaInformation", method = RequestMethod.GET)
-    public ResponseEntity<?> sortVaccinationMetaInformation(String sort) throws Exception {
-        return chartService.sortVaccinationMetaInformation(sort);
-    }
     @CrossOrigin(origins = "*")
-    @RequestMapping(value = "searchVaccinationMetaInformation", method = RequestMethod.GET)
-    public ResponseEntity<?> searchVaccinationMetaInformation(String sort,String search) throws Exception {
-        return chartService.searchVaccinationMetaInformations(sort,search);
-    }*/
+    @RequestMapping(value = "getAnimationInformation", method = RequestMethod.GET)
+    public ResponseEntity<?> getAnimationInformation() throws Exception {
+        String sort="1";
+        return chartService.getAnimationInformation(sort);
+    }
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "reloadInformation", method = RequestMethod.GET)
     public ResponseEntity<?> reDownloadInformation(String sort) throws Exception {
         return chartService.redownload();
     }
-    @CrossOrigin
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "getBarInformation", method = RequestMethod.GET)
     public ResponseEntity<?> getBarInformation() throws IOException {
          return chartService.getBarInformation();
@@ -96,5 +93,10 @@ public class ChartController {
     @RequestMapping(value = "getPieInformation", method = RequestMethod.GET)
     public ResponseEntity<?> getPieInformation() throws IOException {
         return chartService.getPieInformation();
+    }
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "download1", method=RequestMethod.GET)
+    public ResponseEntity<?>download(int what) throws Exception {
+    return chartService.download(what);
     }
 }

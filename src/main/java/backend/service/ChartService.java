@@ -6,9 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Predicate;
@@ -661,6 +665,43 @@ public class ChartService {
         stringObjectHashMap.put("data", components);
         return new ResponseEntity<>(stringObjectHashMap, HttpStatus.OK);
     }
+    public ResponseEntity<?> getAnimationInformation(String sort) throws IOException {
+        ArrayList<DailyCasesAndDeaths> dataRows = DailyCasesAndDeaths.download();
+        HashMap<String, Component> hashMap = new HashMap<>();
+        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
+        List<String> strings = new LinkedList<>();
+        List<Component> components = new LinkedList<>();
+        dataRows.stream().sorted(new Comparator<DailyCasesAndDeaths>() {
+            @Override
+            public int compare(DailyCasesAndDeaths o1, DailyCasesAndDeaths o2) {
+                double temp1 = o1.getCumulative_cases();
+                double temp2 = o1.getCumulative_cases();
+                if(temp1<temp2){
+                    return 1;
+                }else if(temp1>temp2){
+                    return -1;
+                }return 0;
+            }
+        });
+        for (DailyCasesAndDeaths tem : dataRows) {
+            double temp1 = tem.getCumulative_cases();
+            if (!hashMap.containsKey(tem.getCountry())) {
+                List<DailyCasesAndDeaths>dailyCasesAndDeaths=new LinkedList<>();
+                Component component = new Component(tem.getCountry(), new LinkedList<>());
+                hashMap.put(tem.getCountry(), component);
+                strings.add(component.getName());
+                components.add(component);
+            } else {
+                    hashMap.get(tem.getCountry()).getData().add(temp1);
+            }
+        }
+        HashMap<String, Object> temp = new HashMap<>();
+        temp.put("data", strings);
+        stringObjectHashMap.put("name", temp);
+        stringObjectHashMap.put("type", "line");
+        stringObjectHashMap.put("data", components);
+        return new ResponseEntity<>(stringObjectHashMap, HttpStatus.OK);
+    }
     public ResponseEntity<?> updateGiuHub() throws Exception {
         System.out.println();
         System.out.println("read data from gitHub");
@@ -676,5 +717,45 @@ public class ChartService {
         System.out.println("success");
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
-
+    public ResponseEntity<?> download(int type) throws Exception {
+        Class clazz=null;
+        String down=null;
+        if(type==1) {
+            clazz=DailyCasesAndDeaths.class;
+            down=exportCsv(dataRows,clazz);
+        }else if(type==2) {
+            clazz=LatestCasesAndDeaths.class;
+            down=exportCsv(LatestDataRows,clazz);
+        }else if(type==3) {
+            clazz=VaccinationData.class;
+            down=exportCsv(vaccinationData,clazz);
+        }else if(type==0) {
+            clazz = DataRow.class;
+            down = exportCsv(dataRows1, clazz);
+        }
+        HashMap<String, Object> temp = new HashMap<>();
+        temp.put("data",down);
+        return new ResponseEntity<>(temp, HttpStatus.OK);
+    }
+    public static String exportCsv( List<?> dataList,Class<?>clazz) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            if (dataList != null && !dataList.isEmpty()) {
+                for (Object data : dataList) {
+                   Field f[]= clazz.getDeclaredFields();
+                   for (int i=0;i<f.length;++i) {
+                       f[i].setAccessible(true);
+                       sb.append(String.valueOf(f[i].get(data)));
+                       if (i!=f.length-1){
+                           sb.append(",");
+                       }
+                   }
+                    sb.append("\n");
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return sb.toString();
+    }
 }
