@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -89,7 +90,7 @@ public class ChartService {
         return new ResponseEntity<>(stringObjectHashMap, HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getLineInformation3() throws IOException {
+    public ResponseEntity<?> getLineInformation3() throws Exception {
         ArrayList<VaccinationData> dataRows = VaccinationData.download();
 
         HashMap<String, Component> hashMap = new HashMap<>();
@@ -220,7 +221,7 @@ public class ChartService {
         }return object;
     }
 
-    public ResponseEntity<?> getLineInformation4() throws IOException {
+    public ResponseEntity<?> getLineInformation4() throws Exception {
         ArrayList<VaccinationMetadata> dataRows = VaccinationMetadata.download();
 //
 //        HashMap<String, Component> hashMap = new HashMap<>();
@@ -253,7 +254,8 @@ public class ChartService {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
-//    public ResponseEntity<?> getBarInformation() {
+
+    //    public ResponseEntity<?> getBarInformation() {
 //        HashMap<String, Component> hashMap = new HashMap<>();
 //        HashMap<String, Object> stringObjectHashMap = new HashMap<>();
 //        List<String> strings = new LinkedList<>();
@@ -283,4 +285,19 @@ public class ChartService {
 //        stringObjectHashMap.put("data", components);
 //        return new ResponseEntity<>(stringObjectHashMap, HttpStatus.OK);
 //    }
+    public ResponseEntity<?> updateGiuHub() throws Exception {
+        System.out.println();
+        System.out.println("read data from gitHub");
+        readDataFromGithub.download();
+        System.out.println("success");
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> updateWho() throws Exception {
+        System.out.println();
+        System.out.println("read data from Who");
+        readDataFromWho.download();
+        System.out.println("success");
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 }
