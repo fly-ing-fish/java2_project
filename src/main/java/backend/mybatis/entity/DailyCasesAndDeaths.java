@@ -36,7 +36,7 @@ public class DailyCasesAndDeaths implements Serializable {
         File f = new File(path);
         OutputStream outputStream = new FileOutputStream(f);
         int byteCount = 0;
-        byte[] bytes = new byte[1024*1024*1024];
+        byte[] bytes = new byte[1024*1024];
         while ((byteCount = inputStream.read(bytes)) != -1) {
             outputStream.write(bytes, 0, byteCount);
         }

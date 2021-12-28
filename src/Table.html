@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="table.css"/>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="table.js"></script>
+</head>
+<body onload="initial()" >
+<table id="table" >
+    <caption id="a">
+        <h2>Table-View</h2>
+    </caption>
+    <tbody>
+
+    <tr>
+        <th>Date_reported</th>
+        <th>Country_code</th>
+        <th>Country</th>
+        <th>WHO_region</th>
+        <th>New_cases</th>
+        <th>Cumulative_cases</th>
+        <th>New_deaths</th>
+        <th>Cumulative_deaths</th>
+        <th>Name</th>
+        <th>WHO_region</th>
+        <th>CasesCumulativeTotal</th>
+        <th>CasesCumulativeTotalPer100000</th>
+        <th>CasesNewlyIn7days</th>
+        <th>CasesNewlyIn7daysPer100000</th>
+        <th>CasesReportedIn24hours</th>
+        <th>DeathsCumulativeTotal</th>
+        <th>DeathsCumulativeTotalPer100000</th>
+        <th>DeathsNewlyIn7days</th>
+        <th>DeathsNewlyIn7daysPer100000</th>
+        <th>DeathsReportedIn24hours</th>
+        <th>COUNTRY</th>
+        <th>ISO3</th>
+        <th>WHO_REGION</th>
+        <th>DATA_SOURCE</th>
+        <th>DATE_UPDATED</th>
+        <th>TOTAL_VACCINATIONS</th>
+        <th>PERSONS_VACCINATED_1PLUS_DOSE</th>
+        <th>TOTAL_VACCINATIONS_PER100</th>
+        <th>PERSONS_VACCINATED_1PLUS_DOSE_PER100</th>
+        <th>PERSONS_FULLY_VACCINATED</th>
+        <th>PERSONS_FULLY_VACCINATED_PER100</th>
+        <th>VACCINES_USED</th>
+        <th>FIRST_VACCINE_DATE</th>
+        <th>NUMBER_VACCINES_TYPES_USED</th>
+        <th>ISO3</th>
+        <th>VACCINE_NAME</th>
+        <th>PRODUCT_NAME</th>
+        <th>COMPANY_NAME</th>
+        <th>FIRST_VACCINE_DATE</th>
+        <th>AUTHORIZATION_DATE</th>
+        <th>START_DATE</th>
+        <th>END_DATE</th>
+        <th>COMMENT</th>
+        <th>DATA_SOURCE</th>
+    </tr>
+    <tbody id="tbody" style="display: none">
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+
+    </tbody>
+</table>
+<div align="center">
+    <button onClick="onClickSort()">sort</button>
+</div>
+
+<div id="b" style="display: none">
+    <form name="form1"  >
+        Hotel Name:
+        <label>
+            <input type="text" name="Hotel_Name" id="Hotel_Name"/>
+        </label>
+        <br/> City:
+        <label><input name="City" type="radio" onchange="setDistrict()" value="GuangZhou" />Guang Zhou </label>
+        <label><input name="City" type="radio" onchange="setDistrict()" value="ShenZhen" />Shen Zhen </label>
+        <br/> District:
+        <label for="District"></label><select id="District"></select>
+        <br/> Date:
+        <label>
+            <input type="date" name="date" id="date">
+        </label>
+        <br/> Earliest check-in time:
+        <label>
+            <input type="time" name="time" value="23:59:59" id="time"/>
+        </label>
+        <br/> Price:
+        <label>
+            <input type="text" name="Price" id="Price"/>
+        </label>
+        <br/> Room Type:
+        <label for="Room Type"></label>
+        <select id="Room Type">
+        <option>Standard Room</option>
+        <option>King Bed Room</option>
+        <option>Family Room</option>
+        <option>Presidential Suite</option>
+    </select>
+        <br/>
+        <input type="button" value="Add hotel" onclick="onClickSort()"><br>
+        <br/>
+    </form>
+</div>
+
+</body>

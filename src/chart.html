@@ -84,9 +84,6 @@
     // 处理点击事件并且跳转到相应的百度搜索页面
     console.log('3')
     console.log(option)
-    myChart.on('click', function (params) {
-        window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(params.name));
-    });
     console.log('2')
     const response = new XMLHttpRequest();
      console.log('1')
@@ -101,6 +98,7 @@
     // response.open("GET","http://localhost:8082/api/getBarInformation",true);
     response.send()
     function show(jsonObj){
+    console.log("get")
         option.title.text=''
         option.legend=jsonObj['name']
         option.series=jsonObj['data']
