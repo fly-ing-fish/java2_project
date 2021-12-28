@@ -73,15 +73,22 @@
         ]
     };
     const response = new XMLHttpRequest();
+    console.log(option)
     response.onload= function () {
         if (response.status === 200) {
             let jsonObj = JSON.parse(response.responseText)
             console.log(jsonObj)
-           option.series.data;
-
-            if (option && typeof option === 'object') {
-                myChart.setOption(option);
+            option.series[0].data=[]
+            console.log(option.series.data)
+            for (let i=0;i<5;++i){
+                option.series[0].data.push({
+                    value:jsonObj['data'][100+i]['data'][100],
+                    name:jsonObj['data'][100+i]['name']
+                });
+            console.log(option.series.data)
+                console.log(option)
             }
+            myChart.setOption(option);
         }
     }
         response.open("GET","http://localhost:8082/api/getAnimationInformation",true);

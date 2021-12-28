@@ -179,11 +179,11 @@ function download(type){
     let searchRequest = new XMLHttpRequest();
     searchRequest.onload= function () {
         if (searchRequest.status === 200) {
-            const data = response.responseText['data'] // 这里填CSV内容的字符串
+            const data = JSON.parse(searchRequest.responseText)['data'] // 这里填CSV内容的字符串
             const blob = new Blob([data], {type: "text/plain"})
             const link = document.createElement("a")
             link.href = URL.createObjectURL(blob)
-            link.download = "file.text" // 这里填保存成的文件名
+            link.download = "file.txt" // 这里填保存成的文件名
             link.click()
             URL.revokeObjectURL(link.href)
         }
